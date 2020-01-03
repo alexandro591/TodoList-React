@@ -1,50 +1,72 @@
-import React, { Component } from "react"
-import logo from "./logo.svg"
-import "./App.css"
-
-class LambdaDemo extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { loading: false, msg: null }
-  }
-
-  handleClick = api => e => {
-    e.preventDefault()
-
-    this.setState({ loading: true })
-    fetch("/.netlify/functions/" + api)
-      .then(response => response.json())
-      .then(json => this.setState({ loading: false, msg: json.msg }))
-  }
-
-  render() {
-    const { loading, msg } = this.state
-
-    return (
-      <p>
-        <button onClick={this.handleClick("hello")}>{loading ? "Loading..." : "Call Lambda"}</button>
-        <button onClick={this.handleClick("async-dadjoke")}>{loading ? "Loading..." : "Call Async Lambda"}</button>
-        <br />
-        <span>{msg}</span>
-      </p>
-    )
-  }
-}
+import React, {Component} from 'react';
 
 class App extends Component {
-  render() {
-    return (
+  constructor(props) {
+    super(props);
+    this.state = {
+      newItem:"",
+      list:[]
+    }
+  }
+
+  deleteItem(id){
+    const list = this.state.list;
+    const updatedList = list.filter(item => item.id !== id);
+    this.setState({list:updatedList});
+  }
+
+
+  updateInput(key,value){
+    this.setState({
+      [key]:value
+    });
+  };
+
+  addItem(){
+    const newItem={
+      id: 1+ Math.random(),
+      value: this.state.newItem.slice()
+    };
+    const list = this.state.list;
+    list.push(newItem);
+    this.setState({
+      list,
+      newItem:""
+    });
+  }
+
+  render() { 
+    return ( 
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <LambdaDemo />
-        </header>
-      </div>
-    )
+        <div>
+          Add an Item...
+          <br/>
+          <input
+            type="text"
+            placeholder="Type item here"
+            value={this.state.newItem}
+            onChange={e=>this.updateInput("newItem",e.target.value)}
+          />
+          <button onClick={()=>this.addItem()}>
+            Add
+          </button>
+          <br/>
+          <ul>
+            {this.state.list.map(item=>{
+              return(
+                <li key={item.id}>
+                  {item.value}
+                  <button onClick={()=>this.deleteItem(item.id)}>
+                    X
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      </div> 
+    );
   }
 }
-
-export default App
+ 
+export default App;
