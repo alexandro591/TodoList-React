@@ -44,7 +44,7 @@ class App extends Component {
         });
       } catch (error) {
         this.setState({
-          list:[".0."]
+          list:[]
         });
       }
     });
