@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 const axios = require('axios')
 
-
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -12,6 +10,15 @@ class App extends Component {
     }
   }
 
+  async deleteItem(item){
+    try {
+      await axios.delete("https://todolist-488ce.firebaseio.com/alexandro/"+item.toString()+".json");
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
   async addItem(){
     try {
       await axios.post("https://todolist-488ce.firebaseio.com/alexandro.json",{
@@ -20,26 +27,21 @@ class App extends Component {
     } catch (error) {
       console.log(error)
     }
+    this.state.newItem="";
   }
 
   getTodo(){
-      axios.get("https://todolist-488ce.firebaseio.com/alexandro.json")
-      .then(body=>{
-        let size = Object.keys(body.data).length;
-        for(var i=0;i<size;i++){
-          let key
-          var updatedList=[]
-          key = Object.keys(body.data)[i];
-          axios.get("https://todolist-488ce.firebaseio.com/alexandro/"+key.toString()+"/todo.json")
-          .then(body=>{
-            updatedList.push(body.data.toString())
-
-          })
-        }
-        this.setState({
-          "list":updatedList
-        });
+    axios.get("https://todolist-488ce.firebaseio.com/alexandro.json")
+    .then(body=>{
+      var nItems = Object.keys(body.data).length;
+      var item=[];
+      for(let i=0;i<nItems;i++){
+        item.push([Object.keys(body.data)[i],body.data[Object.keys(body.data)[i].toString()].todo.toString()]);
+      }
+      this.setState({
+        list:item
       });
+    });
   }
 
   updateInput(value){
@@ -66,7 +68,16 @@ class App extends Component {
           </button>
           <br/>
           {this.getTodo()}
-          {this.state.list}
+          {this.state.list.map(item=>{
+            return(
+              <li className="list" key={item[1]}>
+                {item[1]}
+                <button className="deleteBtn" onClick={()=>this.deleteItem(item[0])}>
+                  X
+                </button>
+              </li>
+            )
+          })}
         </div>
       </header> 
     );
