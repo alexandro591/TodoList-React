@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+const axios = require('axios')
+
+
 
 class App extends Component {
   constructor(props) {
@@ -9,62 +12,63 @@ class App extends Component {
     }
   }
 
-  deleteItem(id){
-    const list = this.state.list;
-    const updatedList = list.filter(item => item.id !== id);
-    this.setState({list:updatedList});
+  async addItem(){
+    try {
+      await axios.post("https://todolist-488ce.firebaseio.com/alexandro.json",{
+        todo:this.state.newItem
+      });
+    } catch (error) {
+      console.log(error)
+    }
   }
 
+  getTodo(){
+      axios.get("https://todolist-488ce.firebaseio.com/alexandro.json")
+      .then(body=>{
+        let size = Object.keys(body.data).length;
+        for(var i=0;i<size;i++){
+          let key
+          var updatedList=[]
+          key = Object.keys(body.data)[i];
+          axios.get("https://todolist-488ce.firebaseio.com/alexandro/"+key.toString()+"/todo.json")
+          .then(body=>{
+            updatedList.push(body.data.toString())
 
-  updateInput(key,value){
+          })
+        }
+        this.setState({
+          "list":updatedList
+        });
+      });
+  }
+
+  updateInput(value){
     this.setState({
-      [key]:value
+      "newItem":value
     });
   };
 
-  addItem(){
-    const newItem={
-      id: 1+ Math.random(),
-      value: this.state.newItem.slice()
-    };
-    const list = this.state.list;
-    list.push(newItem);
-    this.setState({
-      list,
-      newItem:""
-    });
-  }
-
   render() { 
     return ( 
-      <div className="App">
+      <header className="App">
         <div>
           Add an Item...
           <br/>
           <input
+            className="input"
             type="text"
             placeholder="Type item here"
             value={this.state.newItem}
-            onChange={e=>this.updateInput("newItem",e.target.value)}
+            onChange={e=>this.updateInput(e.target.value)}
           />
-          <button onClick={()=>this.addItem()}>
+          <button className="addBtn" onClick={()=>this.addItem()}>
             Add
           </button>
           <br/>
-          <ul>
-            {this.state.list.map(item=>{
-              return(
-                <li key={item.id}>
-                  {item.value}
-                  <button onClick={()=>this.deleteItem(item.id)}>
-                    X
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
+          {this.getTodo()}
+          {this.state.list}
         </div>
-      </div> 
+      </header> 
     );
   }
 }
