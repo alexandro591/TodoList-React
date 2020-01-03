@@ -33,14 +33,20 @@ class App extends Component {
   getTodo(){
     axios.get("https://todolist-488ce.firebaseio.com/alexandro.json")
     .then(body=>{
-      var nItems = Object.keys(body.data).length;
-      var item=[];
-      for(let i=0;i<nItems;i++){
-        item.push([Object.keys(body.data)[i],body.data[Object.keys(body.data)[i].toString()].todo.toString()]);
+      try {
+        var nItems = Object.keys(body.data).length;
+        var item=[];
+        for(let i=0;i<nItems;i++){
+          item.push([Object.keys(body.data)[i],body.data[Object.keys(body.data)[i].toString()].todo.toString()]);
+        }
+        this.setState({
+          list:item
+        });
+      } catch (error) {
+        this.setState({
+          list:""
+        });
       }
-      this.setState({
-        list:item
-      });
     });
   }
 
