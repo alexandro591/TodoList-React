@@ -60,7 +60,7 @@ class App extends Component {
     return ( 
       <header className="App">
         <div>
-          Add an Item...
+          To do list...
           <br/>
           <input
             className="input"
@@ -70,7 +70,7 @@ class App extends Component {
             onChange={e=>this.updateInput(e.target.value)}
           />
           <button className="addBtn" onClick={()=>this.addItem()}>
-            Add
+            <b>Add</b>
           </button>
           <br/>
           {this.getTodo()}
