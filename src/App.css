@@ -6,7 +6,6 @@
 .App {
   height: 100vh;
   background: linear-gradient(rgb(1, 33, 34),rgba(6, 77, 80, 0.842));
-  background-attachment: fixed;
   align-items: center;
   display: flex;
   justify-content: center;
@@ -18,7 +17,23 @@
   padding: 4px;
 }
 
+.App .addBtn:active, .App .addBtn:hover .App .deleteBtn:active, .App .deleteBtn:hover {
+  outline: none;
+  border: none;
+}
+
+.App .addBtn:active, .App .deleteBtn:active{
+  animation: zoominout .5s;
+}
+
+@keyframes zoominout{
+  50%{transform: scale(1.1);}
+  100%{transform: scale(1.0);}
+}
+
 .App .addBtn{
+  outline: none;
+  border: none;
   margin-bottom: 5px;
   margin-left: 10px;
   padding: 4px;
@@ -28,6 +43,8 @@
 }
 
 .App .deleteBtn{
+  outline: none;
+  border: none;
   margin-bottom: 5px;
   margin-left: 4px;
   padding: 2px;

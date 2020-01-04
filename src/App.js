@@ -11,6 +11,7 @@ class App extends Component {
   }
 
   async deleteItem(item){
+    navigator.vibrate(200)
     try {
       await axios.delete("https://todolist-488ce.firebaseio.com/alexandro/"+item.toString()+".json");
     } catch (error) {
@@ -20,6 +21,7 @@ class App extends Component {
 
 
   async addItem(){
+    navigator.vibrate(200)
     try {
       await axios.post("https://todolist-488ce.firebaseio.com/alexandro.json",{
         todo:this.state.newItem
