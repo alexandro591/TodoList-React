@@ -3,14 +3,25 @@
   border: 0;
   padding: 0;
 }
+#root{
+  margin: 0;
+  padding: 0;
+
+}
 .App {
-  height: 100vh;
   background: linear-gradient(rgb(1, 33, 34),rgba(6, 77, 80, 0.842));
-  align-items: center;
-  display: flex;
-  justify-content: center;
+  text-align: center;
   color: white;
   font-size: calc(7px + 3vmin);
+}
+
+.container{
+  padding-top: 50px;
+}
+
+.listContainer{
+  text-align: justify;
+  margin-left: 10vw;
 }
 
 .App .input{
@@ -45,14 +56,15 @@
 .App .deleteBtn{
   outline: none;
   border: none;
+  margin-top: 5px;
   margin-bottom: 5px;
   margin-left: 4px;
   padding: 2px;
   padding-left: 7px;
   padding-right: 7px;
-  border-radius: 50px;
+  border-radius: 25%;
 }
 
 .App .list{
-  font-size: calc(2px + 2vmin);
+  font-size: calc(4px + 2vmin);
 }

@@ -5,6 +5,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      height: window.innerHeight,
       newItem:"",
       list:[]
     }
@@ -21,15 +22,20 @@ class App extends Component {
 
 
   async addItem(){
-    navigator.vibrate(200)
-    try {
-      await axios.post("https://todolist-488ce.firebaseio.com/alexandro.json",{
-        todo:this.state.newItem
-      });
-    } catch (error) {
-      console.log(error)
+    if(this.state.newItem!==""){
+      navigator.vibrate(200);
+      try {
+        await axios.post("https://todolist-488ce.firebaseio.com/alexandro.json",{
+          todo:this.state.newItem
+        });
+      } catch (error) {
+        console.log(error)
+      }
+      this.state.newItem="";
     }
-    this.state.newItem="";
+    else{
+      alert("You have to add an item first");
+    }
   }
 
   getTodo(){
@@ -60,11 +66,14 @@ class App extends Component {
 
   render() { 
     return ( 
-      <header className="App">
-        <div>
+      
+      <div className="App" style={{height: this.state.height}}>
+        
+        <div className="container">
           To do list...
           <br/>
           <input
+            spellcheck="false"
             className="input"
             type="text"
             placeholder="Type item here"
@@ -75,6 +84,8 @@ class App extends Component {
             <b>Add</b>
           </button>
           <br/>
+        </div>
+        <div className="listContainer">
           {this.getTodo()}
           {this.state.list.map(item=>{
             return(
@@ -87,7 +98,7 @@ class App extends Component {
             )
           })}
         </div>
-      </header> 
+      </div> 
     );
   }
 }
