@@ -5,6 +5,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      themeColor: "#000000",
       height: window.innerHeight,
       newItem:"",
       list:[]
@@ -60,20 +61,21 @@ class App extends Component {
 
   updateInput(value){
     this.setState({
-      "newItem":value
+      themeColor:"#000000",
+      newItem:value
     });
   };
 
   render() { 
     return ( 
       
-      <div className="App" style={{height: this.state.height}}>
-        
+      <div className="App" style={{minHeight: this.state.height}}>
+      <meta name="theme-color" content={this.state.themeColor}></meta>
         <div className="container">
           To do list...
           <br/>
           <input
-            spellcheck="false"
+            spellCheck="false"
             className="input"
             type="text"
             placeholder="Type item here"
